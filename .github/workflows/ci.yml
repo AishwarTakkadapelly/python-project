@@ -74,8 +74,4 @@ jobs:
         docker tag my-python-app $DOCKER_HUB_USERNAME/my-python-app:latest
         docker push $DOCKER_HUB_USERNAME/my-python-app:latest
 
-    - name: Clean up
-      if: always()
-      run: |
-        docker stop my-python-app-container || true
-        docker rm my-python-app-container || true
+    
