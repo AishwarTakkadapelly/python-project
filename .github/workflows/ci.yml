@@ -47,9 +47,22 @@ jobs:
 
     - name: Run Docker container
       run: |
-        docker run -d -p 5055:5000 --name my-python-app-container my-python-app
-        sleep 10  # Give it some time to start
-        curl -f http://localhost:5000 || (docker logs my-python-app-container && exit 1)
+        docker run -d -p 5000:5000 --name my-python-app-container my-python-app
+        echo "Waiting for the Flask app to start..."
+        for i in {1..5}; do
+          if curl -f http://localhost:5055; then
+            echo "App is up!"
+            break
+          else
+            echo "App is not ready yet. Retrying in 5 seconds..."
+            sleep 5
+          fi
+          if [ $i -eq 5 ]; then
+            echo "App failed to start in time. Exiting."
+            docker logs my-python-app-container
+            exit 1
+          fi
+        done
 
     - name: Push Docker image (optional)
       if: github.event_name == 'push'
