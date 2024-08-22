@@ -50,7 +50,7 @@ jobs:
         docker run -d -p 5000:5000 --name my-python-app-container my-python-app
         echo "Waiting for the Flask app to start..."
         for i in {1..5}; do
-          if curl -f http://localhost:5055; then
+          if curl -f http://localhost:5000; then
             echo "App is up!"
             break
           else
